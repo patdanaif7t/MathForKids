@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>2nd GRADE</title>
+</head>
+
+<body style="background-image: url(bg2.png);" onload="init(),setNotEdit(),playAudio()">
+
+    <div class="d-flex justify-content-between">
+        <h1 class="text-center tracking-in-expand" id="grade">2nd GRADE</h1>
+
+        <button style="width: 50px; background-color: rgb(182, 6, 6);margin-right: 10px;margin-top: 10px " type="button"
+            id="play" class="btn btn-secondary" onclick="playAudio()"><i class="fa fa-volume-off"
+                aria-hidden="true"></i></button>
+        <button style="display: none; width: 50px;background-color:rgb(5, 177, 28);margin-right: 10px;margin-top: 10px "
+            id="stop" type="button" class="btn btn-secondary" onclick="pauseAudio()"><i class="fa fa-volume-up"
+                aria-hidden="true"></i></button>
+    </div>
+
+    <div class="container-fluid" style=" width: 100%; margin-top: 5px">
+        <h1 id="score" class="tracking-in-expand">Score : 0</h1>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <img src="https://media1.giphy.com/media/fdIHApYudS0Crl5mfP/giphy.gif" width="190px" height="200px">
+    </div>
+
+    <div class="blur-bg">
+        <div class="d-flex justify-content-center" style="margin-top: 10px">
+            <h1 style="font-size: 80px; color: white" id="Que" class="tracking-in-expand">Waiting...</h1>
+
+            <input type="text" class="form-ans" maxlength="3" id="answer" onkeypress="isInputNumber(event)">
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn  btn-choice tracking-in-expand" value="5" draggable="true" ondragstart="drag(event),setEdit()"
+                ondragend="setNotEdit()" id="Choice1">5</button>
+
+            <button type="button" class="btn  btn-choice tracking-in-expand" value="10" id="Choice2" draggable="true"
+                ondragstart="drag(event),setEdit()" ondragend="setNotEdit()">10</button>
+
+            <button type="button" class="btn  btn-choice tracking-in-expand" value="25" id="Choice3" draggable="true"
+                ondragstart="drag(event),setEdit()" ondragend="setNotEdit()">25</button>
+
+            <button type="button" class="btn btn-choice tracking-in-expand" value="18" id="Choice4" draggable="true"
+                ondragstart="drag(event),setEdit()" ondragend="setNotEdit()">18</button>
+
+        </div>
+
+    </div>
+    <div class="d-flex justify-content-center ">
+        <button style="font-size: 40px" type="button" class="btn  btn-choice tracking-in-expand"
+            onclick="checkAnswer(),showScore()">Next</button>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content"
+                style="background-image: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/N13e7awhgiljgescq/alien-flying-in-space-ship-retro-cartoon-style-with-flat-design_rjmtbslqpl_thumbnail-full04.png)">
+                <div class="modal-header" style="border-bottom:0px">
+                    <h2 class="modal-title " style="font-size: 40px; margin-left: 29%; color:cornsilk">
+                        ❌ Don't give up! ❌</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="https://thumbs.gfycat.com/MemorableDetailedKingsnake-max-1mb.gif" width="200px"
+                            height="200px">
+                    </div>
+                    <p class="text-center" style="font-size: 50px; color: cornsilk" id="modalScore">Your Score </p>
+                </div>
+                <div class="modal-footer" style="margin: auto; border: 0px; margin-bottom: 20px">
+                    <button type="button" class="btn btn-modal" data-dismiss="moal" onclick="reload()">Try
+                        Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="winmodal" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content"
+                style="background-image: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/N13e7awhgiljgescq/alien-flying-in-space-ship-retro-cartoon-style-with-flat-design_rjmtbslqpl_thumbnail-full04.png)">
+                <div class="modal-header" style="border-bottom:0px">
+                    <h2 class="modal-title " style="font-size: 40px;margin-left: 20%; color: cornsilk">
+                        ✔️ That's the best ever! ✔️</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="https://pic.chinesefontdesign.com/uploads/2016/09/chinesefontdesign.com_2016-09-12_18-42-13.gif"
+                            width="200px" height="200px">
+                    </div>
+                    <p class="text-center" style="font-size: 50px; color: cornsilk" id="modalScore">You got 10/10 <br>
+                        Go to the next
+                        Next Grade</p>
+                </div>
+                <div class="modal-footer" style="margin: auto; border: 0px; margin-bottom: 20px">
+                    <a href="choose_game.html"> <button type="button" class="btn btn-modal" data-dismiss="moal">Next
+                            Grade</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ------------------- ------ -->
+
+    <!-- ----เสียงประกอบ ------ -->
+    <audio id="myAudio">
+        <source src="sound/After_School_Jamboree.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="ปรบมือ">
+        <source src="sound/เสียงปรบมือ.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+<!-- ---- - - - - - - - - - ------- -->
+    <style>
+        .btn-modal {
+            background-image: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/N13e7awhgiljgescq/alien-flying-in-space-ship-retro-cartoon-style-with-flat-design_rjmtbslqpl_thumbnail-full04.png);
+            margin-left: 10px !important;
+            width: 180px;
+            height: 70px;
+            color: rgb(121, 132, 230);
+            font-size: 30px;
+            border: 2px solid rgb(240, 237, 237);
+            border-radius: 10px;
+        }
+
+        .btn-choice {
+            font-size: 50px;
+            width: 120px;
+            height: 70px;
+            margin: 20px 10px 10px 10px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px solid rgb(145, 236, 168);
+            color: cornsilk;
+            background-image: url(https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/N13e7awhgiljgescq/alien-flying-in-space-ship-retro-cartoon-style-with-flat-design_rjmtbslqpl_thumbnail-full04.png);
+        }
+
+        .form-ans {
+            height: 70px;
+            width: 120px;
+            font-size: 60px;
+            border-radius: 10px;
+            margin-left: 10px;
+            margin-top: 10px;
+            background-color: rgb(236, 237, 245);
+        }
+    </style>
+    <script>
+        function setNotEdit() {
+            var ans = document.getElementById('answer')
+            ans.readOnly = true;
+        }
+        function setEdit() {
+            var ans = document.getElementById('answer')
+            ans.readOnly = false;
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.value);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+
+        }
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous">
+        </script>
+    <script src="game_2.js"></script>
+    <script src="EngineGame.js"></script>
+</body>
+
+</html>
